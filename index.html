@@ -526,8 +526,19 @@
                 transform: translateX(0);
             }
 
+            .sidebar-toggle {
+                display: block !important;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                width: auto;
+                padding: 10px 15px;
+            }
+
             .main-content {
                 padding: 20px;
+                padding-top: 70px;
             }
 
             .video-player-container {
@@ -536,6 +547,12 @@
 
             .video-sidebar {
                 max-height: 300px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar-toggle {
+                display: none !important;
             }
         }
     </style>
@@ -575,9 +592,11 @@
 
     <!-- DASHBOARD VIEW -->
     <div id="dashboardView" class="dashboard-view" style="display: none;">
+        <!-- HAMBURGER BUTTON -->
+        <button class="sidebar-toggle" id="hamburgerBtn" onclick="toggleSidebar()">☰</button>
+
         <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
-            <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
             <div class="sidebar-logo" onclick="showDashboard()" style="cursor: pointer;">
                 <svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="cursor: pointer;">
                     <defs>
