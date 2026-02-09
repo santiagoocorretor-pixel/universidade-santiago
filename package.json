@@ -4,8 +4,8 @@
   "description": "Plataforma de educação para corretores - Universidade Grupo Santiago",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node ./server.js",
+    "dev": "node ./server.js"
   },
   "keywords": [
     "educacao",
@@ -16,5 +16,6 @@
   "license": "ISC",
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "type": "commonjs"
 }
