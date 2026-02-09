@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universidade Grupo Santiago - Educação para Corretores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* ===== LOGIN VIEW ===== */
+        .login-view {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f1419 0%, #1a3a52 100%);
+        }
+
+        .login-container {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo img {
+            width: 120px;
+            height: auto;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #001a4d;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3243c3;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #3243c3 0%, #1a3a52 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* ===== DASHBOARD VIEW ===== */
+        .dashboard-view {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #1a3a52 0%, #0f2438 100%);
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar.hidden {
+            display: none;
+        }
+
+        .sidebar-toggle {
+            background: rgba(50, 67, 195, 0.2);
+            border: 1px solid rgba(50, 67, 195, 0.4);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .sidebar-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .sidebar-logo img {
+            width: 100px;
+            height: auto;
+            border-radius: 8px;
+            background: white;
+            padding: 8px;
+        }
+
+        .sidebar-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-section-title {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin: 20px 0 10px 0;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            padding: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: rgba(50, 67, 195, 0.2);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(50, 67, 195, 0.4);
+            color: white;
+            border-left: 3px solid #3243c3;
+        }
+
+        .sidebar-bottom {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 10px;
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .top-bar {
+            margin-bottom: 40px;
+        }
+
+        .top-bar h1 {
+            font-size: 32px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .top-bar p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+        }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-card h3 {
+            color: #001a4d;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-stat {
+            font-size: 36px;
+            font-weight: 700;
+            color: #3243c3;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ===== COURSES VIEW ===== */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-card-image {
+            background: linear-gradient(135deg, #3243c3 0%, #1a3a52 100%);
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            position: relative;
+        }
+
+        .course-card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            color: #3243c3;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .course-card-content {
+            padding: 20px;
+        }
+
+        .course-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #001a4d;
+            margin-bottom: 10px;
+        }
+
+        .course-card-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .course-card-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .course-card-button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #3243c3 0%, #1a3a52 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .course-card-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ===== VIDEO PLAYER VIEW ===== */
+        .video-player-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        .video-player {
+            background: black;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-sidebar {
+            background: white;
+            border-radius: 12px;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .video-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .video-item:hover {
+            background: #f5f5f5;
+        }
+
+        .video-item.active {
+            background: rgba(50, 67, 195, 0.1);
+            border-left: 3px solid #3243c3;
+        }
+
+        .video-item-number {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .video-item-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #001a4d;
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .admin-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .admin-tab.active {
+            color: #3243c3;
+            border-bottom-color: #3243c3;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3243c3;
+        }
+
+        .btn-primary {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3243c3 0%, #1a3a52 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 1000;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.visible {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .video-player-container {
+                grid-template-columns: 1fr;
+            }
+
+            .video-sidebar {
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN VIEW -->
+    <div id="loginView" class="login-view">
+        <div class="login-container">
+            <div class="login-logo">
+                <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3243c3;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1a3a52;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="60" cy="60" r="58" fill="url(#logoGradient)" stroke="white" stroke-width="2"/>
+                    <text x="60" y="75" font-size="48" font-weight="bold" fill="white" text-anchor="middle" font-family="Poppins">S</text>
+                </svg>
+            </div>
+            <h2 class="login-title">Universidade Grupo Santiago</h2>
+            <p class="login-subtitle">Educação para Corretores</p>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" id="loginUsername" class="form-input" placeholder="Digite seu usuário" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Digite sua senha" required>
+                </div>
+                <button type="submit" class="login-button">Entrar</button>
+                <div id="loginError" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboardView" class="dashboard-view" style="display: none;">
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebar">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+            <div class="sidebar-logo" onclick="showDashboard()" style="cursor: pointer;">
+                <svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="cursor: pointer;">
+                    <defs>
+                        <linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3243c3;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1a3a52;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="60" cy="60" r="58" fill="url(#logoGradient2)" stroke="white" stroke-width="2"/>
+                    <text x="60" y="75" font-size="48" font-weight="bold" fill="white" text-anchor="middle" font-family="Poppins">S</text>
+                </svg>
+            </div>
+            <div class="sidebar-title">Universidade Grupo Santiago</div>
+            <div class="sidebar-subtitle">Educação para Corretores</div>
+
+            <div class="sidebar-section-title">Menu</div>
+            <div class="nav-item active" onclick="showDashboard()">🏠 Home</div>
+            <div class="nav-item" onclick="showCourses()">📚 Cursos</div>
+            <div class="nav-item" onclick="showRoteiros()">📄 Roteiros</div>
+            <div id="adminMenuDiv" class="nav-item" onclick="showAdmin()" style="display: none;">⚙️ Painel Admin</div>
+
+            <div class="sidebar-bottom">
+                <button class="logout-btn" onclick="handleLogout()">🚪 Sair</button>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- DASHBOARD HOME -->
+            <div id="dashboardHome">
+                <div class="top-bar">
+                    <h1 id="dashboardTitle">Bem-vindo à Universidade Grupo Santiago</h1>
+                    <p id="dashboardSubtitle">Desenvolvendo profissionais imobiliários de excelência</p>
+                </div>
+
+                <!-- USER METRICS -->
+                <div id="userMetrics" style="display: none;">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h3 style="color: white;">📚 Cursos em Progresso</h3>
+                            <div class="dashboard-stat" id="coursesInProgress" style="color: white;">0</div>
+                            <div class="dashboard-label" style="color: rgba(255,255,255,0.8);">Cursos iniciados</div>
+                        </div>
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <h3 style="color: white;">🏆 Progresso Geral</h3>
+                            <div class="dashboard-stat" id="overallProgress" style="color: white;">0%</div>
+                            <div class="dashboard-label" style="color: rgba(255,255,255,0.8);">De conclusão</div>
+                        </div>
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <h3 style="color: white;">⏱️ Horas Estudadas</h3>
+                            <div class="dashboard-stat" id="hoursStudied" style="color: white;">0h</div>
+                            <div class="dashboard-label" style="color: rgba(255,255,255,0.8);">Tempo investido</div>
+                        </div>
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <h3 style="color: white;">🎯 Aulas Concluídas</h3>
+                            <div class="dashboard-stat" id="lessonsCompleted" style="color: white;">0</div>
+                            <div class="dashboard-label" style="color: rgba(255,255,255,0.8);">De 132 aulas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN METRICS -->
+                <div id="adminMetrics" style="display: none;">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h3 style="color: white;">👥 Usuários Ativos</h3>
+                            <div class="dashboard-stat" id="activeUsers" style="color: white;">4</div>
+                            <div class="dashboard-label" style="color: rgba(255,255,255,0.8);">Usuários cadastrados</div>
+                        </div>
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <h3 style="color: white;">📊 Taxa de Engajamento</h3>
+                            <div class="dashboard-stat" id="engagementRate" style="color: white;">75%</div>
+                            <div class="dashboard-label" style="color: rgba(255,255,255,0.8);">Usuários ativos</div>
+                        </div>
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <h3 style="color: white;">📚 Total de Cursos</h3>
+                            <div class="dashboard-stat" id="totalCoursesAdmin" style="color: white;">11</div>
+                            <div class="dashboard-label" style="color: rgba(255,255,255,0.8);">Cursos disponíveis</div>
+                        </div>
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <h3 style="color: white;">🎓 Total de Aulas</h3>
+                            <div class="dashboard-stat" id="totalLessonsAdmin" style="color: white;">132</div>
+                            <div class="dashboard-label" style="color: rgba(255,255,255,0.8);">Aulas estruturadas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GENERIC METRICS (shown to all) -->
+                <div id="genericMetrics">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h3>📚 Total de Cursos</h3>
+                            <div class="dashboard-stat" id="totalCourses">11</div>
+                            <div class="dashboard-label">Cursos disponíveis</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>⏱️ Horas Totais</h3>
+                            <div class="dashboard-stat" id="totalHours">31.7h</div>
+                            <div class="dashboard-label">De conteúdo</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>🎓 Aulas</h3>
+                            <div class="dashboard-stat" id="totalLessons">132</div>
+                            <div class="dashboard-label">Aulas estruturadas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top-bar" style="margin-top: 40px;">
+                    <h2 style="font-size: 24px; margin-bottom: 20px;">Cursos em Destaque</h2>
+                </div>
+
+                <div class="courses-grid" id="dashboardCourses"></div>
+            </div>
+
+            <!-- COURSES VIEW -->
+            <div id="coursesView" style="display: none;">
+                <div class="top-bar">
+                    <h1>Cursos Disponíveis</h1>
+                    <p>Escolha um curso para começar</p>
+                </div>
+                <div class="courses-grid" id="coursesList"></div>
+            </div>
+
+            <!-- VIDEO PLAYER VIEW -->
+            <div id="videoPlayerView" style="display: none;">
+                <div class="top-bar">
+                    <h1 id="courseTitle">Título do Curso</h1>
+                    <p id="courseDescription">Descrição</p>
+                </div>
+                <div class="video-player-container">
+                    <div>
+                        <div class="video-player" id="videoPlayer"></div>
+                        <div style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button class="btn-primary" onclick="previousVideo()">← Anterior</button>
+                            <span id="videoProgress" style="color: white; display: flex; align-items: center;"></span>
+                            <button class="btn-primary" onclick="nextVideo()">Próximo →</button>
+                            <button class="btn-primary" onclick="backToCourses()">← Voltar</button>
+                        </div>
+                    </div>
+                    <div class="video-sidebar" id="videoList"></div>
+                </div>
+            </div>
+
+            <!-- ADMIN PANEL -->
+            <div id="adminPanel" style="display: none;">
+                <div class="top-bar">
+                    <h1>⚙️ Painel de Administração</h1>
+                    <p>Gerenciar conteúdo e usuários</p>
+                </div>
+
+                <div class="admin-panel">
+                    <div class="admin-tabs">
+                        <button class="admin-tab active" onclick="switchAdminTab('content')">📚 Conteúdo</button>
+                        <button class="admin-tab" onclick="switchAdminTab('users')">👥 Usuários</button>
+                    </div>
+
+                    <div id="successMessage" class="success-message">✅ Operação realizada com sucesso!</div>
+
+                    <!-- CONTENT TAB -->
+                    <div id="contentTab">
+                        <h3 style="margin-bottom: 20px;">Adicionar Vídeo</h3>
+                        <div class="form-group">
+                            <label class="form-label">Selecione o Curso</label>
+                            <select id="courseSelect" class="form-input">
+                                <option value="">-- Escolha um curso --</option>
+                            </select>
+                        </div>
+                        <div id="courseContent"></div>
+                        <button class="btn-primary" onclick="addVideo()">📄 Adicionar Vídeo</button>
+                    </div>
+
+                    <!-- USERS TAB -->
+                    <div id="usersTab" style="display: none;">
+                        <h3 style="margin-bottom: 20px;">Gerenciar Usuários</h3>
+                        <div style="margin-bottom: 30px;">
+                            <h4>Criar Novo Usuário</h4>
+                            <div class="form-group">
+                                <label class="form-label">Usuário</label>
+                                <input type="text" id="newUsername" class="form-input" placeholder="Digite o usuário">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Senha</label>
+                                <input type="password" id="newPassword" class="form-input" placeholder="Digite a senha">
+                            </div>
+                            <button class="btn-primary" onclick="createUser()">Criar Usuário</button>
+                        </div>
+
+                        <hr style="margin: 30px 0;">
+
+                        <h4>Usuários Cadastrados</h4>
+                        <div id="usersList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROTEIROS VIEW -->
+            <div id="roteirosView" style="display: none;">
+                <div class="top-bar">
+                    <h1>📄 Roteiros de Conteúdo</h1>
+                    <p>Guias completos para produção de vídeos</p>
+                </div>
+                <div class="courses-grid" id="roteirosGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== DATA =====
+        const courses = [
+            { id: 1, icon: '🏠', title: 'Minha Casa Minha Vida', description: 'Tudo sobre o programa MCMV', badge: 'Novo', modules: 5, hours: 4 },
+            { id: 2, icon: '💰', title: 'Financiamento Caixa', description: 'Como funciona o financiamento', badge: 'Popular', modules: 5, hours: 4 },
+            { id: 3, icon: '💼', title: 'Técnicas de Vendas', description: 'Dicas e macetes para vender', badge: 'Essencial', modules: 5, hours: 4 },
+            { id: 4, icon: '📋', title: 'Documentação', description: 'Documentos necessários', badge: 'Novo', modules: 5, hours: 4 },
+            { id: 5, icon: '✅', title: 'Elegibilidade', description: 'Quem pode financiar', badge: 'Importante', modules: 5, hours: 4 },
+            { id: 6, icon: '⭐', title: 'Pós-Venda', description: 'Atendimento ao cliente', badge: 'Avançado', modules: 5, hours: 4 },
+            { id: 7, icon: '📈', title: 'Investimentos', description: 'Estratégias de investimento imobiliário', badge: 'Premium', modules: 5, hours: 4 },
+            { id: 8, icon: '📱', title: 'Marketing Digital para Corretores', description: 'Estratégias de marketing digital', badge: 'Novo', modules: 6, hours: 4 },
+            { id: 9, icon: '⏰', title: 'Gestão de Tempo', description: 'Organização e produtividade', badge: 'Essencial', modules: 5, hours: 4 },
+            { id: 10, icon: '🎯', title: 'Captação Profissional de Imóveis', description: 'Técnicas avançadas de captação', badge: 'Avançado', modules: 6, hours: 4 },
+            { id: 11, icon: '📚', title: 'Ferramentas e E-books', description: 'Recursos e materiais', badge: 'Premium', modules: 4, hours: 4 }
+        ];
+
+        const courseRoteiros = {
+            1: [
+                { aula: 1, titulo: 'Introdução ao MCMV', duracao: 15, topicos: 'Historia, Objetivos, Publico-alvo' },
+                { aula: 2, titulo: 'Critérios de Elegibilidade', duracao: 18, topicos: 'Renda, Patrimonio, Restricoes' },
+                { aula: 3, titulo: 'Processo de Aprovação', duracao: 20, topicos: 'Etapas, Documentacao, Prazos' },
+                { aula: 4, titulo: 'Subsídios e Benefícios', duracao: 16, topicos: 'Tipos de Subsidio, Calculo, Beneficiarios' },
+                { aula: 5, titulo: 'Estratégias de Venda', duracao: 17, topicos: 'Abordagem, Apresentacao, Fechamento' },
+                { aula: 6, titulo: 'Acompanhamento Pós-Venda', duracao: 14, topicos: 'Satisfacao, Referencias, Relacionamento' },
+                { aula: 7, titulo: 'Casos de Sucesso', duracao: 15, topicos: 'Exemplos Reais, Resultados, Aprendizados' },
+                { aula: 8, titulo: 'Documentação Completa', duracao: 19, topicos: 'Checklist, Modelos, Validacao' },
+                { aula: 9, titulo: 'Simulações Práticas', duracao: 18, topicos: 'Exercicios, Calculos, Cenarios' },
+                { aula: 10, titulo: 'Perguntas Frequentes', duracao: 14, topicos: 'Duvidas Comuns, Respostas, Dicas' },
+                { aula: 11, titulo: 'Atualizações 2024', duracao: 16, topicos: 'Mudancas Recentes, Impactos, Adaptacoes' },
+                { aula: 12, titulo: 'Conclusão e Próximos Passos', duracao: 13, topicos: 'Resumo, Certificacao, Recursos Adicionais' }
+            ],
+            2: [
+                { aula: 1, titulo: 'O que é Financiamento Imobiliário', duracao: 15, topicos: 'Conceitos, Tipos, Modalidades' },
+                { aula: 2, titulo: 'Financiamento Caixa - Características', duracao: 18, topicos: 'Taxas, Prazos, Benefícios' },
+                { aula: 3, titulo: 'Requisitos e Documentação', duracao: 20, topicos: 'Documentos, Análise de Crédito, Validação' },
+                { aula: 4, titulo: 'Cálculo de Prestações', duracao: 16, topicos: 'Fórmulas, Simuladores, Exemplos' },
+                { aula: 5, titulo: 'Aprovação e Análise de Crédito', duracao: 17, topicos: 'Processo, Critérios, Prazos' },
+                { aula: 6, titulo: 'Seguros e Garantias', duracao: 14, topicos: 'Seguro MIP, Seguro Incêndio, Garantias' },
+                { aula: 7, titulo: 'Assinatura de Contrato', duracao: 15, topicos: 'Procedimentos, Documentação, Assinatura' },
+                { aula: 8, titulo: 'Liberação de Recursos', duracao: 19, topicos: 'Cronograma, Desembolsos, Acompanhamento' },
+                { aula: 9, titulo: 'Acompanhamento da Obra', duracao: 18, topicos: 'Vistorias, Relatórios, Problemas Comuns' },
+                { aula: 10, titulo: 'Finalização do Financiamento', duracao: 14, topicos: 'Últimos Desembolsos, Documentação Final' },
+                { aula: 11, titulo: 'Pós-Financiamento', duracao: 16, topicos: 'Suporte, Renegociação, Portabilidade' },
+                { aula: 12, titulo: 'Casos Práticos e Simulações', duracao: 13, topicos: 'Exemplos Reais, Cálculos, Cenários' }
+            ],
+            3: [
+                { aula: 1, titulo: 'Psicologia do Vendedor', duracao: 15, topicos: 'Mentalidade, Atitude, Confiança' },
+                { aula: 2, titulo: 'Técnicas de Abordagem', duracao: 18, topicos: 'Prospecção, Qualificação, Rapport' },
+                { aula: 3, titulo: 'Escuta Ativa e Empatia', duracao: 20, topicos: 'Comunicação, Entendimento, Necessidades' },
+                { aula: 4, titulo: 'Apresentação de Soluções', duracao: 16, topicos: 'Demonstração, Benefícios, Diferenciais' },
+                { aula: 5, titulo: 'Objeções e Objeções', duracao: 17, topicos: 'Tratamento, Argumentação, Respostas' },
+                { aula: 6, titulo: 'Negociação e Fechamento', duracao: 14, topicos: 'Estratégias, Técnicas, Timing' },
+                { aula: 7, titulo: 'Gestão de Relacionamento', duracao: 15, topicos: 'Follow-up, Fidelização, Referências' },
+                { aula: 8, titulo: 'Vendas Consultivas', duracao: 19, topicos: 'Consultoria, Soluções Personalizadas' },
+                { aula: 9, titulo: 'Uso de Tecnologia em Vendas', duracao: 18, topicos: 'CRM, Ferramentas, Automação' },
+                { aula: 10, titulo: 'Análise de Mercado', duracao: 14, topicos: 'Tendências, Concorrência, Oportunidades' },
+                { aula: 11, titulo: 'Metas e Indicadores', duracao: 16, topicos: 'KPIs, Planejamento, Acompanhamento' },
+                { aula: 12, titulo: 'Casos de Sucesso em Vendas', duracao: 13, topicos: 'Histórias Reais, Aprendizados, Dicas' }
+            ],
+            4: [
+                { aula: 1, titulo: 'Documentação Essencial', duracao: 15, topicos: 'Checklist, Documentos Obrigatórios' },
+                { aula: 2, titulo: 'Documentação do Comprador', duracao: 18, topicos: 'RG, CPF, Comprovante de Renda' },
+                { aula: 3, titulo: 'Documentação do Imóvel', duracao: 20, topicos: 'Matrícula, Certidão, Averbações' },
+                { aula: 4, titulo: 'Comprovante de Renda', duracao: 16, topicos: 'Tipos, Análise, Validação' },
+                { aula: 5, titulo: 'Análise de Crédito', duracao: 17, topicos: 'Score, Restrições, Histórico' },
+                { aula: 6, titulo: 'Documentação Complementar', duracao: 14, topicos: 'Certidões, Antecedentes, Validações' },
+                { aula: 7, titulo: 'Organização de Documentos', duracao: 15, topicos: 'Arquivamento, Rastreamento, Segurança' },
+                { aula: 8, titulo: 'Digitação e Sistemas', duracao: 19, topicos: 'Preenchimento, Validação, Envio' },
+                { aula: 9, titulo: 'Prazos e Vencimentos', duracao: 18, topicos: 'Controle, Renovação, Alertas' },
+                { aula: 10, titulo: 'Documentação para Financiamento', duracao: 14, topicos: 'Específicos, Requisitos Bancários' },
+                { aula: 11, titulo: 'Conformidade e Regulamentação', duracao: 16, topicos: 'LGPD, Segurança, Privacidade' },
+                { aula: 12, titulo: 'Resolução de Problemas Documentais', duracao: 13, topicos: 'Erros, Correções, Revalidação' }
+            ],
+            5: [
+                { aula: 1, titulo: 'Quem Pode Financiar', duracao: 15, topicos: 'Requisitos Básicos, Elegibilidade' },
+                { aula: 2, titulo: 'Limites de Renda', duracao: 18, topicos: 'Faixas, Cálculos, Exceções' },
+                { aula: 3, titulo: 'Análise de Patrimônio', duracao: 20, topicos: 'Bens, Valores, Restrições' },
+                { aula: 4, titulo: 'Score de Crédito', duracao: 16, topicos: 'Cálculo, Interpretação, Melhoria' },
+                { aula: 5, titulo: 'Restrições Legais', duracao: 17, topicos: 'Dívidas, Protestos, Antecedentes' },
+                { aula: 6, titulo: 'Comprovação de Renda', duracao: 14, topicos: 'Tipos, Validação, Aceitação' },
+                { aula: 7, titulo: 'Análise de Capacidade de Pagamento', duracao: 15, topicos: 'Cálculos, Índices, Simulações' },
+                { aula: 8, titulo: 'Elegibilidade para Programas Especiais', duracao: 19, topicos: 'Subsídios, Benefícios, Requisitos' },
+                { aula: 9, titulo: 'Documentação de Elegibilidade', duracao: 18, topicos: 'Comprovações, Validações, Análise' },
+                { aula: 10, titulo: 'Casos de Inelegibilidade', duracao: 14, topicos: 'Motivos, Soluções, Alternativas' },
+                { aula: 11, titulo: 'Apelação e Recursos', duracao: 16, topicos: 'Processos, Documentação, Prazos' },
+                { aula: 12, titulo: 'Simulador de Elegibilidade', duracao: 13, topicos: 'Ferramenta, Prática, Exemplos' }
+            ],
+            6: [
+                { aula: 1, titulo: 'Atendimento ao Cliente', duracao: 15, topicos: 'Comunicação, Empatia, Profissionalismo' },
+                { aula: 2, titulo: 'Resolução de Problemas', duracao: 18, topicos: 'Análise, Soluções, Acompanhamento' },
+                { aula: 3, titulo: 'Gestão de Reclamações', duracao: 20, topicos: 'Escuta, Resolução, Satisfação' },
+                { aula: 4, titulo: 'Pós-Venda Consultivo', duracao: 16, topicos: 'Suporte, Orientação, Relacionamento' },
+                { aula: 5, titulo: 'Fidelização de Clientes', duracao: 17, topicos: 'Retenção, Programas, Benefícios' },
+                { aula: 6, titulo: 'Geração de Referências', duracao: 14, topicos: 'Indicações, Redes, Relacionamento' },
+                { aula: 7, titulo: 'Acompanhamento de Obra', duracao: 15, topicos: 'Vistorias, Relatórios, Comunicação' },
+                { aula: 8, titulo: 'Suporte Financeiro', duracao: 19, topicos: 'Dúvidas, Cálculos, Orientações' },
+                { aula: 9, titulo: 'Gestão de Expectativas', duracao: 18, topicos: 'Comunicação, Realismo, Transparência' },
+                { aula: 10, titulo: 'Análise de Satisfação', duracao: 14, topicos: 'Pesquisas, Feedback, Melhorias' },
+                { aula: 11, titulo: 'Retenção e Upsell', duracao: 16, topicos: 'Estratégias, Oportunidades, Técnicas' },
+                { aula: 12, titulo: 'Casos de Sucesso em Pós-Venda', duracao: 13, topicos: 'Histórias, Aprendizados, Boas Práticas' }
+            ],
+            7: [
+                { aula: 1, titulo: 'Mercado Imobiliário', duracao: 15, topicos: 'Tendências, Ciclos, Oportunidades' },
+                { aula: 2, titulo: 'Tipos de Investimento Imobiliário', duracao: 18, topicos: 'Residencial, Comercial, Industrial' },
+                { aula: 3, titulo: 'Análise de Localização', duracao: 20, topicos: 'Bairros, Infraestrutura, Potencial' },
+                { aula: 4, titulo: 'Avaliação de Imóveis', duracao: 16, topicos: 'Métodos, Cálculos, Comparativos' },
+                { aula: 5, titulo: 'Rentabilidade e ROI', duracao: 17, topicos: 'Cálculos, Simulações, Análise' },
+                { aula: 6, titulo: 'Financiamento para Investimento', duracao: 14, topicos: 'Modalidades, Taxas, Condições' },
+                { aula: 7, titulo: 'Gestão de Propriedade', duracao: 15, topicos: 'Aluguel, Manutenção, Administração' },
+                { aula: 8, titulo: 'Impostos e Tributos', duracao: 19, topicos: 'IPTU, IR, Deduções, Planejamento' },
+                { aula: 9, titulo: 'Estratégias de Compra e Venda', duracao: 18, topicos: 'Timing, Negociação, Maximização' },
+                { aula: 10, titulo: 'Diversificação de Portfólio', duracao: 14, topicos: 'Estratégias, Risco, Retorno' },
+                { aula: 11, titulo: 'Análise de Mercado', duracao: 16, topicos: 'Dados, Tendências, Previsões' },
+                { aula: 12, titulo: 'Casos de Investimento Bem-Sucedido', duracao: 13, topicos: 'Histórias Reais, Aprendizados' }
+            ],
+            8: [
+                { aula: 1, titulo: 'Fundamentos de Marketing Digital', duracao: 15, topicos: 'Conceitos, Canais, Estratégias' },
+                { aula: 2, titulo: 'Presença em Redes Sociais', duracao: 18, topicos: 'Facebook, Instagram, LinkedIn' },
+                { aula: 3, titulo: 'Criação de Conteúdo', duracao: 20, topicos: 'Blog, Vídeos, Infográficos' },
+                { aula: 4, titulo: 'SEO e SEM', duracao: 16, topicos: 'Otimização, Publicidade, Palavras-chave' },
+                { aula: 5, titulo: 'Email Marketing', duracao: 17, topicos: 'Campanhas, Segmentação, Automação' },
+                { aula: 6, titulo: 'Publicidade Digital', duracao: 14, topicos: 'Google Ads, Facebook Ads, Estratégias' },
+                { aula: 7, titulo: 'Análise de Dados', duracao: 15, topicos: 'Métricas, KPIs, Relatórios' },
+                { aula: 8, titulo: 'Funil de Vendas Digital', duracao: 19, topicos: 'Atração, Conversão, Retenção' },
+                { aula: 9, titulo: 'Branding e Posicionamento', duracao: 18, topicos: 'Identidade, Mensagem, Diferencial' },
+                { aula: 10, titulo: 'Relacionamento com Clientes Online', duracao: 14, topicos: 'CRM, Chatbot, Suporte' },
+                { aula: 11, titulo: 'Ferramentas e Plataformas', duracao: 16, topicos: 'Softwares, Integrações, Automação' },
+                { aula: 12, titulo: 'Estratégia Digital Completa', duracao: 13, topicos: 'Planejamento, Execução, Avaliação' }
+            ],
+            9: [
+                { aula: 1, titulo: 'Diagnóstico de Tempo', duracao: 15, topicos: 'Análise, Identificação, Prioridades' },
+                { aula: 2, titulo: 'Planejamento Estratégico', duracao: 18, topicos: 'Objetivos, Metas, Cronograma' },
+                { aula: 3, titulo: 'Técnicas de Produtividade', duracao: 20, topicos: 'Pomodoro, Blocos, Foco' },
+                { aula: 4, titulo: 'Organização de Tarefas', duracao: 16, topicos: 'Listas, Priorização, Delegação' },
+                { aula: 5, titulo: 'Gestão de Interrupções', duracao: 17, topicos: 'Distrações, Comunicação, Limites' },
+                { aula: 6, titulo: 'Hábitos Produtivos', duracao: 14, topicos: 'Rotinas, Disciplina, Consistência' },
+                { aula: 7, titulo: 'Equilíbrio Vida-Trabalho', duracao: 15, topicos: 'Bem-estar, Saúde, Qualidade de Vida' },
+                { aula: 8, titulo: 'Ferramentas de Organização', duracao: 19, topicos: 'Apps, Softwares, Integração' },
+                { aula: 9, titulo: 'Gestão de Projetos', duracao: 18, topicos: 'Metodologias, Planejamento, Execução' },
+                { aula: 10, titulo: 'Comunicação Eficiente', duracao: 14, topicos: 'Reuniões, E-mails, Mensagens' },
+                { aula: 11, titulo: 'Análise e Melhoria Contínua', duracao: 16, topicos: 'Métricas, Feedback, Ajustes' },
+                { aula: 12, titulo: 'Implementação de Mudanças', duracao: 13, topicos: 'Plano de Ação, Acompanhamento, Sucesso' }
+            ],
+            10: [
+                { aula: 1, titulo: 'Prospecção Imobiliária', duracao: 15, topicos: 'Técnicas, Estratégias, Fontes' },
+                { aula: 2, titulo: 'Identificação de Oportunidades', duracao: 18, topicos: 'Análise, Avaliação, Seleção' },
+                { aula: 3, titulo: 'Abordagem de Proprietários', duracao: 20, topicos: 'Comunicação, Persuasão, Relacionamento' },
+                { aula: 4, titulo: 'Avaliação de Imóveis para Captação', duracao: 16, topicos: 'Análise, Preço, Potencial' },
+                { aula: 5, titulo: 'Negociação de Captação', duracao: 17, topicos: 'Estratégias, Argumentação, Fechamento' },
+                { aula: 6, titulo: 'Documentação de Propriedade', duracao: 14, topicos: 'Coleta, Organização, Validação' },
+                { aula: 7, titulo: 'Marketing de Propriedade', duracao: 15, topicos: 'Apresentação, Fotos, Descrição' },
+                { aula: 8, titulo: 'Gestão de Carteira de Imóveis', duracao: 19, topicos: 'Organização, Acompanhamento, Vendas' },
+                { aula: 9, titulo: 'Relacionamento com Proprietários', duracao: 18, topicos: 'Comunicação, Suporte, Fidelização' },
+                { aula: 10, titulo: 'Análise de Mercado para Captação', duracao: 14, topicos: 'Preços, Tendências, Oportunidades' },
+                { aula: 11, titulo: 'Técnicas Avançadas de Captação', duracao: 16, topicos: 'Estratégias, Inovação, Diferencial' },
+                { aula: 12, titulo: 'Casos de Sucesso em Captação', duracao: 13, topicos: 'Histórias, Aprendizados, Boas Práticas' }
+            ],
+            11: [
+                { aula: 1, titulo: 'Recursos Disponíveis', duracao: 15, topicos: 'Ferramentas, Materiais, Acesso' },
+                { aula: 2, titulo: 'E-books e Guias', duracao: 18, topicos: 'Conteúdo, Download, Uso' },
+                { aula: 3, titulo: 'Templates e Modelos', duracao: 20, topicos: 'Documentos, Apresentações, Contratos' },
+                { aula: 4, titulo: 'Planilhas de Cálculo', duracao: 16, topicos: 'Financiamentos, Investimentos, Análises' },
+                { aula: 5, titulo: 'Vídeos Tutoriais', duracao: 17, topicos: 'Passo a Passo, Ferramentas, Técnicas' },
+                { aula: 6, titulo: 'Webinars e Treinamentos', duracao: 14, topicos: 'Aulas Online, Certificação, Atualização' },
+                { aula: 7, titulo: 'Comunidade e Networking', duracao: 15, topicos: 'Grupos, Fóruns, Conexões' },
+                { aula: 8, titulo: 'Suporte Técnico', duracao: 19, topicos: 'Ajuda, Dúvidas, Resolução' },
+                { aula: 9, titulo: 'Atualizações de Conteúdo', duracao: 18, topicos: 'Novidades, Melhorias, Adições' },
+                { aula: 10, titulo: 'Certificação e Badges', duracao: 14, topicos: 'Reconhecimento, Progresso, Prêmios' },
+                { aula: 11, titulo: 'Feedback e Sugestões', duracao: 16, topicos: 'Opinião, Melhoria, Participação' },
+                { aula: 12, titulo: 'Próximos Passos na Carreira', duracao: 13, topicos: 'Desenvolvimento, Oportunidades, Crescimento' }
+            ]
+        };
+
+        let currentUser = null;
+        let currentCourseId = null;
+        let currentVideos = [];
+        let currentVideoIndex = 0;
+
+        // ===== LOGIN =====
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const defaultUsers = {
+                "admin": {"password": "admin123", "role": "admin", "active": true},
+                "user": {"password": "user123", "role": "user", "active": true},
+                "corretor1": {"password": "123456", "role": "user", "active": true},
+                "corretor2": {"password": "123456", "role": "user", "active": true}
+            };
+            const users = JSON.parse(localStorage.getItem('users') || JSON.stringify(defaultUsers));
+
+            if (users[username] && users[username].password === password && users[username].active !== false) {
+                currentUser = { username, role: users[username].role };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showDashboard();
+            } else {
+                document.getElementById('loginError').textContent = 'Usuário ou senha inválidos!';
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('loginView').style.display = 'flex';
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        // ===== INITIALIZATION =====
+        window.addEventListener('load', function() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            } else {
+                document.getElementById('loginView').style.display = 'flex';
+                document.getElementById('dashboardView').style.display = 'none';
+            }
+
+            loadCourses();
+            if (currentUser && currentUser.role === 'admin') {
+                document.getElementById('adminMenuDiv').style.display = 'block';
+                loadAdminPanel();
+            } else {
+                document.getElementById('adminMenuDiv').style.display = 'none';
+            }
+        });
+
+        // ===== NAVIGATION =====
+        function showDashboard() {
+            document.getElementById('loginView').style.display = 'none';
+            document.getElementById('dashboardView').style.display = 'flex';
+            document.getElementById('dashboardHome').style.display = 'block';
+            document.getElementById('coursesView').style.display = 'none';
+            document.getElementById('videoPlayerView').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('roteirosView').style.display = 'none';
+            // Atualizar visibilidade do Painel Admin
+            if (currentUser && currentUser.role === 'admin') {
+                document.getElementById('adminMenuDiv').style.display = 'block';
+            } else {
+                document.getElementById('adminMenuDiv').style.display = 'none';
+            }
+            loadDashboard();
+            closeSidebar();
+        }
+
+        function showCourses() {
+            document.getElementById('dashboardHome').style.display = 'none';
+            document.getElementById('coursesView').style.display = 'block';
+            document.getElementById('videoPlayerView').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('roteirosView').style.display = 'none';
+            // Atualizar visibilidade do Painel Admin
+            if (currentUser && currentUser.role === 'admin') {
+                document.getElementById('adminMenuDiv').style.display = 'block';
+            } else {
+                document.getElementById('adminMenuDiv').style.display = 'none';
+            }
+            loadCourses();
+            closeSidebar();
+        }
+
+        function showAdmin() {
+            if (currentUser && currentUser.role !== 'admin') return;
+            document.getElementById('dashboardHome').style.display = 'none';
+            document.getElementById('coursesView').style.display = 'none';
+            document.getElementById('videoPlayerView').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('roteirosView').style.display = 'none';
+            // Mostrar Painel Admin
+            document.getElementById('adminMenuDiv').style.display = 'block';
+            loadAdminPanel();
+            closeSidebar();
+        }
+
+        function showRoteiros() {
+            document.getElementById('dashboardHome').style.display = 'none';
+            document.getElementById('coursesView').style.display = 'none';
+            document.getElementById('videoPlayerView').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('roteirosView').style.display = 'block';
+            // Atualizar visibilidade do Painel Admin
+            if (currentUser && currentUser.role === 'admin') {
+                document.getElementById('adminMenuDiv').style.display = 'block';
+            } else {
+                document.getElementById('adminMenuDiv').style.display = 'none';
+            }
+            loadRoteiros();
+            closeSidebar();
+        }
+
+        // ===== DASHBOARD =====
+        function loadDashboard() {
+            // Mostrar/esconder metricas baseado no role
+            if (currentUser && currentUser.role === 'admin') {
+                document.getElementById('adminMetrics').style.display = 'block';
+                document.getElementById('userMetrics').style.display = 'none';
+                document.getElementById('dashboardTitle').textContent = 'Painel do Administrador';
+                document.getElementById('dashboardSubtitle').textContent = 'Visao geral da plataforma e gestao de usuarios';
+            } else {
+                document.getElementById('userMetrics').style.display = 'block';
+                document.getElementById('adminMetrics').style.display = 'none';
+                document.getElementById('dashboardTitle').textContent = 'Bem-vindo, ' + (currentUser ? currentUser.username : 'Usuario') + '!';
+                document.getElementById('dashboardSubtitle').textContent = 'Seu progresso na Universidade Grupo Santiago';
+                updateUserMetrics();
+            }
+            
+            const grid = document.getElementById('dashboardCourses');
+            grid.innerHTML = '';
+            courses.slice(0, 6).forEach(course => {
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.onclick = () => selectCourse(course.id);
+                card.innerHTML = `
+                    <div class="course-card-image">
+                        <div class="course-card-badge">${course.badge}</div>
+                        <span>${course.icon}</span>
+                    </div>
+                    <div class="course-card-content">
+                        <div class="course-card-title">${course.title}</div>
+                        <div class="course-card-description">${course.description}</div>
+                        <div class="course-card-meta">
+                            <span>📚 ${course.modules} modulos</span>
+                            <span>⏱️ ~${course.hours}h</span>
+                        </div>
+                        <button class="course-card-button">Acessar</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        function updateUserMetrics() {
+            let coursesInProgress = 0;
+            let lessonsCompleted = 0;
+            
+            for (let courseId in courseProgress) {
+                if (courseProgress[courseId].length > 0) {
+                    coursesInProgress++;
+                    lessonsCompleted += courseProgress[courseId].length;
+                }
+            }
+            
+            const hoursStudied = Math.round((lessonsCompleted * 15) / 60 * 10) / 10;
+            const totalLessons = 132;
+            const overallProgress = Math.round((lessonsCompleted / totalLessons) * 100);
+            
+            document.getElementById('coursesInProgress').textContent = coursesInProgress;
+            document.getElementById('lessonsCompleted').textContent = lessonsCompleted;
+            document.getElementById('hoursStudied').textContent = hoursStudied + 'h';
+            document.getElementById('overallProgress').textContent = overallProgress + '%';
+        }
+
+        // ===== COURSES =====
+        function loadCourses() {
+            const grid = document.getElementById('coursesList');
+            grid.innerHTML = '';
+            courses.forEach(course => {
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.onclick = () => selectCourse(course.id);
+                card.innerHTML = `
+                    <div class="course-card-image">
+                        <div class="course-card-badge">${course.badge}</div>
+                        <span>${course.icon}</span>
+                    </div>
+                    <div class="course-card-content">
+                        <div class="course-card-title">${course.title}</div>
+                        <div class="course-card-description">${course.description}</div>
+                        <div class="course-card-meta">
+                            <span>📚 ${course.modules} módulos</span>
+                            <span>⏱️ ~${course.hours}h</span>
+                        </div>
+                        <button class="course-card-button">Acessar</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectCourse(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+
+            const courseContent = JSON.parse(localStorage.getItem('courseContent') || '{}');
+            const videos = courseContent[courseId] || [];
+
+            if (videos.length === 0) {
+                alert(`${course.title}\n\nNenhum vídeo adicionado ainda. Aguarde o administrador adicionar conteúdo!`);
+                return;
+            }
+
+            currentCourseId = courseId;
+            currentVideos = videos;
+            currentVideoIndex = 0;
+
+            document.getElementById('dashboardHome').style.display = 'none';
+            document.getElementById('coursesView').style.display = 'none';
+            document.getElementById('videoPlayerView').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('roteirosView').style.display = 'none';
+
+            document.getElementById('courseTitle').textContent = course.title;
+            document.getElementById('courseDescription').textContent = course.description;
+
+            loadVideo(0);
+            loadVideoList();
+            closeSidebar();
+        }
+
+        function loadVideo(index) {
+            if (index < 0 || index >= currentVideos.length) return;
+
+            currentVideoIndex = index;
+            const video = currentVideos[index];
+
+            let iframeUrl = '';
+            if (video.videoUrl.includes('youtube.com')) {
+                const videoId = new URL(video.videoUrl).searchParams.get('v');
+                iframeUrl = `https://www.youtube.com/embed/${videoId}`;
+            } else if (video.videoUrl.includes('youtu.be')) {
+                const videoId = video.videoUrl.split('/').pop();
+                iframeUrl = `https://www.youtube.com/embed/${videoId}`;
+            }
+
+            document.getElementById('videoPlayer').innerHTML = `<iframe src="${iframeUrl}" allowfullscreen></iframe>`;
+            document.getElementById('videoProgress').textContent = `${index + 1} de ${currentVideos.length}`;
+        }
+
+        function loadVideoList() {
+            const list = document.getElementById('videoList');
+            list.innerHTML = '';
+            currentVideos.forEach((video, index) => {
+                const item = document.createElement('div');
+                item.className = 'video-item' + (index === currentVideoIndex ? ' active' : '');
+                item.onclick = () => loadVideo(index);
+                item.innerHTML = `
+                    <div class="video-item-number">Aula ${index + 1}</div>
+                    <div class="video-item-title">${video.title}</div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function previousVideo() {
+            if (currentVideoIndex > 0) loadVideo(currentVideoIndex - 1);
+        }
+
+        function nextVideo() {
+            if (currentVideoIndex < currentVideos.length - 1) loadVideo(currentVideoIndex + 1);
+        }
+
+        function backToCourses() {
+            showCourses();
+        }
+
+        function backToRoteiros() {
+            showRoteiros();
+        }
+
+        // ===== ADMIN PANEL =====
+        function loadAdminPanel() {
+            const select = document.getElementById('courseSelect');
+            select.innerHTML = '<option value="">-- Escolha um curso --</option>';
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = course.title;
+                select.appendChild(option);
+            });
+
+            select.onchange = function() {
+                const courseId = parseInt(this.value);
+                if (courseId) {
+                    loadCourseContent(courseId);
+                }
+            };
+
+            loadUsersList();
+        }
+
+        function loadCourseContent(courseId) {
+            const container = document.getElementById('courseContent');
+            const roteiros = courseRoteiros[courseId] || [];
+
+            let html = '<div style="margin: 20px 0;"><h4>Aulas do Curso</h4>';
+            roteiros.forEach((aula, index) => {
+                html += `
+                    <div style="background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 6px;">
+                        <h5>Aula ${aula.aula}: ${aula.titulo}</h5>
+                        <p style="font-size: 13px; color: #666; margin: 10px 0;">⏱️ ${aula.duracao} minutos | Tópicos: ${aula.topicos}</p>
+                        <input type="text" id="videoTitle_${index}" class="form-input" placeholder="Título do vídeo" value="${aula.titulo}" style="margin-bottom: 10px;">
+                        <input type="url" id="videoUrl_${index}" class="form-input" placeholder="URL do vídeo (YouTube)" style="margin-bottom: 10px;">
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function addVideo() {
+            const courseId = parseInt(document.getElementById('courseSelect').value);
+            if (!courseId) {
+                alert('Selecione um curso!');
+                return;
+            }
+
+            const roteiros = courseRoteiros[courseId] || [];
+            const courseContent = JSON.parse(localStorage.getItem('courseContent') || '{}');
+            if (!courseContent[courseId]) courseContent[courseId] = [];
+
+            roteiros.forEach((aula, index) => {
+                const title = document.getElementById(`videoTitle_${index}`).value;
+                const url = document.getElementById(`videoUrl_${index}`).value;
+                if (title && url) {
+                    courseContent[courseId].push({ title, videoUrl: url });
+                }
+            });
+
+            localStorage.setItem('courseContent', JSON.stringify(courseContent));
+            document.getElementById('successMessage').classList.add('show');
+            setTimeout(() => document.getElementById('successMessage').classList.remove('show'), 3000);
+        }
+
+        function switchAdminTab(tab) {
+            document.getElementById('contentTab').style.display = tab === 'content' ? 'block' : 'none';
+            document.getElementById('usersTab').style.display = tab === 'users' ? 'block' : 'none';
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function createUser() {
+            const username = document.getElementById('newUsername').value;
+            const password = document.getElementById('newPassword').value;
+            if (!username || !password) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+
+            const defaultUsers = {
+                "admin": {"password": "admin123", "role": "admin", "active": true},
+                "user": {"password": "user123", "role": "user", "active": true},
+                "corretor1": {"password": "123456", "role": "user", "active": true},
+                "corretor2": {"password": "123456", "role": "user", "active": true}
+            };
+            const users = JSON.parse(localStorage.getItem('users') || JSON.stringify(defaultUsers));
+            if (users[username]) {
+                alert('Usuário já existe!');
+                return;
+            }
+
+            users[username] = { password, role: 'user', active: true };
+            localStorage.setItem('users', JSON.stringify(users));
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            loadUsersList();
+            document.getElementById('successMessage').classList.add('show');
+            setTimeout(() => document.getElementById('successMessage').classList.remove('show'), 3000);
+        }
+
+        function loadUsersList() {
+            const defaultUsers = {
+                "admin": {"password": "admin123", "role": "admin", "active": true},
+                "user": {"password": "user123", "role": "user", "active": true},
+                "corretor1": {"password": "123456", "role": "user", "active": true},
+                "corretor2": {"password": "123456", "role": "user", "active": true}
+            };
+            const users = JSON.parse(localStorage.getItem('users') || JSON.stringify(defaultUsers));
+            const list = document.getElementById('usersList');
+            list.innerHTML = '';
+
+            Object.entries(users).forEach(([username, data]) => {
+                const item = document.createElement('div');
+                item.style.cssText = 'background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;';
+                item.innerHTML = `
+                    <div>
+                        <strong>${username}</strong> (${data.role}) - ${data.active !== false ? 'Ativo' : 'Inativo'}
+                    </div>
+                    <button class="btn-primary" onclick="toggleUserStatus('${username}')" style="padding: 8px 16px; font-size: 12px;">
+                        ${data.active !== false ? 'Desativar' : 'Ativar'}
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function toggleUserStatus(username) {
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[username]) {
+                users[username].active = !users[username].active;
+                localStorage.setItem('users', JSON.stringify(users));
+                loadUsersList();
+            }
+        }
+
+        // ===== ROTEIROS =====
+        function loadRoteiros() {
+            const grid = document.getElementById('roteirosGrid');
+            grid.innerHTML = '';
+            courses.forEach(course => {
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.onclick = () => showRoteiroDetail(course.id);
+                card.innerHTML = `
+                    <div class="course-card-image">
+                        <span>${course.icon}</span>
+                    </div>
+                    <div class="course-card-content">
+                        <div class="course-card-title">${course.title}</div>
+                        <div class="course-card-meta">
+                            <span>📚 12 aulas</span>
+                            <span>⏱️ 170 min</span>
+                        </div>
+                        <button class="course-card-button">Ver Roteiro</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function showRoteiroDetail(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            const roteiros = courseRoteiros[courseId] || [];
+            const progressKey = `progress_${courseId}_${currentUser.username}`;
+            const progress = JSON.parse(localStorage.getItem(progressKey) || '{}');
+            const completedCount = Object.values(progress).filter(v => v).length;
+            const percentage = roteiros.length > 0 ? Math.round((completedCount / roteiros.length) * 100) : 0;
+
+            // Esconder a grid de roteiros e mostrar o detalhe
+            document.getElementById('roteirosGrid').style.display = 'none';
+            let detailContainer = document.getElementById('roteiroDetail');
+            if (!detailContainer) {
+                detailContainer = document.createElement('div');
+                detailContainer.id = 'roteiroDetail';
+                document.getElementById('roteirosView').appendChild(detailContainer);
+            }
+
+            let html = `<div class="top-bar"><h1>${course.title}</h1><p>Total: ${roteiros.length} aulas | Conclusão: ${percentage}%</p></div>`;
+            html += `<div style="background: white; padding: 30px; border-radius: 12px;">`;
+            html += `<div style="margin-bottom: 20px;">`;
+            html += `<p style="margin-bottom: 10px;">Progresso: ${completedCount}/${roteiros.length} aulas concluídas</p>`;
+            html += `<div style="background: #e0e0e0; height: 20px; border-radius: 10px; overflow: hidden;">`;
+            html += `<div style="background: linear-gradient(90deg, #3243c3, #1a3a52); height: 100%; width: ${percentage}%; transition: width 0.3s;"></div>`;
+            html += `</div>`;
+            html += `<p style="margin-top: 10px; font-size: 12px; color: #666;">${percentage}% concluído</p>`;
+            html += `</div>`;
+
+            roteiros.forEach((aula, index) => {
+                const isCompleted = progress[index] || false;
+                html += `
+                    <div style="padding: 15px; margin: 10px 0; background: ${isCompleted ? '#e8f5e9' : '#f5f5f5'}; border-radius: 6px; border-left: 3px solid ${isCompleted ? '#4caf50' : '#3243c3'}; cursor: pointer;" onclick="toggleAulaProgress(${courseId}, ${index})">
+                        <h4>${isCompleted ? '✅' : '⭕'} Aula ${aula.aula}: ${aula.titulo}</h4>
+                        <p style="font-size: 13px; color: #666; margin: 10px 0;">⏱️ ${aula.duracao} minutos</p>
+                        <p style="font-size: 13px; color: #666;"><strong>Tópicos:</strong> ${aula.topicos}</p>
+                    </div>
+                `;
+            });
+
+            html += `<button class="btn-primary" onclick="backFromRoteiroDetail()" style="margin-top: 20px;">← Voltar</button>`;
+            html += `</div>`;
+            html += `</div>`;
+
+            detailContainer.innerHTML = html;
+        }
+
+        function backFromRoteiroDetail() {
+            const detailContainer = document.getElementById('roteiroDetail');
+            if (detailContainer) {
+                detailContainer.remove(); // Remover completamente o container
+            }
+            document.getElementById('roteirosGrid').style.display = 'grid';
+            loadRoteiros(); // Recarregar a lista de roteiros
+        }
+
+        function toggleAulaProgress(courseId, aulaIndex) {
+            const progressKey = `progress_${courseId}_${currentUser.username}`;
+            const progress = JSON.parse(localStorage.getItem(progressKey) || '{}');
+            progress[aulaIndex] = !progress[aulaIndex];
+            localStorage.setItem(progressKey, JSON.stringify(progress));
+            showRoteiroDetail(courseId);
+        }
+
+        // ===== SIDEBAR =====
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('visible');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('visible');
+        }
+    </script>
+</body>
+</html>
