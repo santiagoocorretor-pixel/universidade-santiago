@@ -685,25 +685,7 @@
                 </div>
 
                 <!-- GENERIC METRICS (shown to all) -->
-                <div id="genericMetrics">
-                    <div class="dashboard-grid">
-                        <div class="dashboard-card">
-                            <h3>📚 Total de Cursos</h3>
-                            <div class="dashboard-stat" id="totalCourses">11</div>
-                            <div class="dashboard-label">Cursos disponíveis</div>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>⏱️ Horas Totais</h3>
-                            <div class="dashboard-stat" id="totalHours">31.7h</div>
-                            <div class="dashboard-label">De conteúdo</div>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>🎓 Aulas</h3>
-                            <div class="dashboard-stat" id="totalLessons">132</div>
-                            <div class="dashboard-label">Aulas estruturadas</div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Métricas genéricas removidas -->
 
                 <div class="top-bar" style="margin-top: 40px;">
                     <h2 style="font-size: 24px; margin-bottom: 20px;">Cursos em Destaque</h2>
@@ -766,6 +748,18 @@
                             </select>
                         </div>
                         <div id="courseContent"></div>
+                        <div class="form-group">
+                            <label class="form-label">Título do Vídeo</label>
+                            <input type="text" id="videoTitle" class="form-input" placeholder="Ex: Introdução ao Financiamento">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">URL do Vídeo</label>
+                            <input type="text" id="videoUrl" class="form-input" placeholder="Ex: https://youtube.com/...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Descrição do Vídeo</label>
+                            <textarea id="videoDescription" class="form-input" placeholder="Descreva o conteúdo do vídeo..." style="min-height: 100px;"></textarea>
+                        </div>
                         <button class="btn-primary" onclick="addVideo()">📄 Adicionar Vídeo</button>
                     </div>
 
@@ -1382,7 +1376,8 @@
                 item.style.cssText = 'background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;';
                 item.innerHTML = `
                     <div>
-                        <strong>${username}</strong> (${data.role}) - ${data.active !== false ? 'Ativo' : 'Inativo'}
+                        <strong>${username}</strong> (${data.role}) - ${data.active !== false ? 'Ativo' : 'Inativo'}<br>
+                        <small style="color: #666;">Senha: <code>${data.password}</code></small>
                     </div>
                     <button class="btn-primary" onclick="toggleUserStatus('${username}')" style="padding: 8px 16px; font-size: 12px;">
                         ${data.active !== false ? 'Desativar' : 'Ativar'}
