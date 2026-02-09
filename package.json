@@ -1,0 +1,20 @@
+{
+  "name": "universidade-santiago",
+  "version": "1.0.0",
+  "description": "Plataforma de educação para corretores - Universidade Grupo Santiago",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "educacao",
+    "corretores",
+    "santiago"
+  ],
+  "author": "Santiago",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
